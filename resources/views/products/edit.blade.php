@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Edit Product</div>
+                    <div class="panel-heading">New Product</div>
 
                     <div class="panel-body">
                         @if ($errors->count() > 0)
@@ -15,12 +15,12 @@
                                 @endforeach
                             </ul>
                         @endif
-                        <form action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="_method" value="PUT">
+                        <form action="{{ route('products.update', ['id' => $product->id]) }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                            Title:
+                            <input type="hidden" name="_method" value="PUT">
+                            Name:
                             <br />
-                            <input type="text" name="title" value="{{ $product->title }}" />
+                            <input type="text" name="name" value="{{ $product->name }}" />
                             <br /><br />
                             
                             Description:
@@ -31,7 +31,7 @@
                             Image:
                             <br />
                             <input name="image" type="file">
-                            <img src="{{ $product->image_path }}" />
+                            <img src="{{ asset('img/' . $product->image) }}" style="width:50px;height:60px;" />
                             <br /><br />
                             
                             Price:

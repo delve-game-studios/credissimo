@@ -41,13 +41,14 @@ class ProductsController extends Controller
     {
         $data = $request->all();
 
-        $imagePath = $request->file('image')->store('public');
-        $image = Image::make(Storage::get($imagePath))->encode();
-        Storage::put($imagePath, $image);
+        $imagePath = $request->file('image')->store('img');
+        $image = Image::make(Storage::get($imagePath))->resize(320,240)->encode();
+        Storage::disk('uploads')->put($imagePath, $image);
 
-        $imagePath = str_replace('public/', '', $imagePath);
+        $imagePath = str_replace('img/', '', $imagePath);
 
-        $data['image_path'] = $imagePath;
+        $data['image'] = $imagePath;
+        $data['slug'] = strtolower(implode('-', explode(' ', $data['name'])));
 
         Product::create($data);
         return redirect()->route('products.index')->with(['message' => 'Product added successfully']);
@@ -85,8 +86,23 @@ class ProductsController extends Controller
      */
     public function update(StoreProductRequest $request, $id)
     {
+        $data = $request->all();
         $product = Product::findOrFail($id);
-        $product->update($request->all());
+
+        if($request->has('image')) {
+            $imagePath = $request->file('image')->store('img');
+            $image = Image::make(Storage::get($imagePath))->resize(320,240)->encode();
+            Storage::disk('uploads')->put($imagePath, $image);
+
+            $imagePath = str_replace('img/', '', $imagePath);
+
+            $data['image'] = $imagePath;
+        } else {
+            $data['image'] = $product->image;
+        }
+
+        $data['slug'] = strtolower(implode('-', explode(' ', $data['name'])));
+        $product->update($data);
         return redirect()->route('products.index')->with(['message' => 'Product updated successfully']);
     }
 

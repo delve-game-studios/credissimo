@@ -17,9 +17,9 @@
                         @endif
                         <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
-                            Title:
+                            Name:
                             <br />
-                            <input type="text" name="title" value="{{ old('title') }}" />
+                            <input type="text" name="name" value="{{ old('name') }}" />
                             <br /><br />
                             
                             Description:

@@ -53,5 +53,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::resource('products', 'ProductsController');
     Route::delete('products/mass_destroy', 'ProductsController@massDestroy')->name('products.mass_destroy');
-    Route::resource('products', 'ProductsController');
 });
