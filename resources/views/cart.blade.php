@@ -72,7 +72,7 @@
 			</table>
 			<a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg">Continue Shopping</a>
 			&nbsp;
-			<a href="javascript:alert('There\'s no payment functionality');" class="btn btn-success btn-lg">Proceed to checkout</a>
+			<a href="{{ route('payment') }}" class="btn btn-success btn-lg">Proceed to checkout</a>
 		@else
 			<h3>Your cart is empty</h3>
 			<a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg">Continue Shopping</a>

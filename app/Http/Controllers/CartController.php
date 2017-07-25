@@ -35,4 +35,17 @@ class CartController extends Controller
     	Cart::remove($rowId);
     	return back()->with('success', 'Removed successfully!');
     }
+
+    public function getPayment() {
+        return view('checkout.payment');
+    }
+
+    public function getStripe() {
+        $total = Cart::total();
+        return view('checkout.stripe', compact('total'));
+    }
+
+    public function postStripe(Request $request) {
+
+    }
 }

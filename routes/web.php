@@ -41,6 +41,22 @@ Route::get('/cart/{id}', [
 	'as' => 'cart.destroy'
 ]);
 
+Route::get('/payment', [
+	'uses' => 'CartController@getPayment',
+	'as' => 'payment'
+]);
+
+Route::get('/payment/stripe', [
+	'uses' => 'CartController@getStripe',
+	'as' => 'stripe'
+]);
+
+Route::post('/payment/stripe', [
+	'uses' => 'CartController@postStripe',
+	'as' => 'payment.stripe'
+]);
+
+
 Route::get('/', function () {
 	return redirect()->route('shop.index');
     // return view('welcome');
