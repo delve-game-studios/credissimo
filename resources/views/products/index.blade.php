@@ -51,7 +51,7 @@
                             </tbody>
                         </table>
                         {{ $products->links() }}
-                        <form action="{{ route('products.mass_destroy') }}" method="post" onsubmit="return confirm('Are you sure?');">
+                        <form action="{{ route('products.mass_destroy') }}" method="POST" onsubmit="return confirm('Are you sure?');">
                             {{ csrf_field() }}
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="ids" id="ids" value="" />

@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
+@section('title')
+Shop - Main
+@endsection
+
 @section('content')
 	<div class="container">
+		@include('partials.flash')
 		@foreach($products->chunk(4) as $items) 
 			<div class="row">
 				@foreach($items as $product)

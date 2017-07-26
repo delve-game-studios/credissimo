@@ -67,6 +67,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+    Route::delete('products/mass_destroy', 'ProductsController@massDestroy')->name('products.mass_destroy');
     Route::resource('products', 'ProductsController');
     Route::delete('products/mass_destroy', 'ProductsController@massDestroy')->name('products.mass_destroy');
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'user'], function() {
+    Route::delete('uploads/mass_destroy', 'UploadsController@massDestroy')->name('uploads.mass_destroy');
+	Route::resource('uploads', 'UploadsController');
+    Route::delete('uploads/mass_destroy', 'UploadsController@massDestroy')->name('uploads.mass_destroy');
 });
