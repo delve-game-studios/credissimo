@@ -19,9 +19,12 @@ class ShopController extends Controller
 
     public function show($slug) {
     	$product = Product::where('slug', $slug)->first();
-    	$interested = Product::where('slug', '!=', $slug)->get()->random(4);
-    	// var_dump($product, $interested);exit;
+    	$interested = Product::where('slug', '!=', $slug)->get();
+        
+        if(!!count($interested)) {
+            $interested = $interested->random(4);
+        }
+
     	return view('product', compact('product', 'interested'));
-    	// return view('product', compact('product', 'interested'));
     }
 }

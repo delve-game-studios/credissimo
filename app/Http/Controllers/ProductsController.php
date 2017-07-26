@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class ProductsController extends Controller
 {
     private function checkIsAdmin() {
-        if(!Auth::user()->is_admin) {
+        if(!Auth::user()->hasRole('Admin')) {
             redirect('/shop')->with('error', 'Access Denied!')->send();
         }
 
@@ -51,7 +51,8 @@ class ProductsController extends Controller
         $this->checkIsAdmin();
         $data = $request->all();
 
-        $imagePath = $request->file('image')->store('img');
+        $imagePath = $request->file('image')->disk('images')->store('img');
+        var_dump($imagePath);exit;
         $image = Image::make(Storage::get($imagePath))->resize(320,240)->encode();
         Storage::disk('uploads')->put($imagePath, $image);
 
@@ -73,6 +74,8 @@ class ProductsController extends Controller
     public function show($id)
     {
         $this->checkIsAdmin();
+        $product = Product::findOrFail($id);
+        return view('products.view', compact('product'));
     }
 
     /**
@@ -101,18 +104,17 @@ class ProductsController extends Controller
         $data = $request->all();
         $product = Product::findOrFail($id);
 
-        if($request->has('image')) {
+        if(!empty($data['image'])) {
             $imagePath = $request->file('image')->store('img');
-            $image = Image::make(Storage::get($imagePath))->resize(320,240)->encode();
+            $image = Image::make(Storage::get($imagePath))->encode();
             Storage::disk('images')->put($imagePath, $image);
-
-            $imagePath = str_replace('img/', '', $imagePath);
+            Storage::disk('images')->delete("{$product->image}");
 
             $data['image'] = $imagePath;
         } else {
             $data['image'] = $product->image;
         }
-
+        
         $data['slug'] = strtolower(implode('-', explode(' ', $data['name'])));
         $product->update($data);
         return redirect()->route('products.index')->with(['message' => 'Product updated successfully']);

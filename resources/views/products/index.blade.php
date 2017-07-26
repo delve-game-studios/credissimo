@@ -30,9 +30,9 @@
                                 @forelse($products as $product)
                                 <tr>
                                     <td><input type="checkbox" class="checkbox_delete" name="entries_to_delete[]" value="{{ $product->id }}" /></td>
-                                    <td>{{ $product->name }}</td>
+                                    <td><a href="{{ route('products.show', ['id' => $product->id]) }}">{{ $product->name }}</a></td>
                                     <td>{{ $product->description }}</td>
-                                    <td class="table-image"><img src="{{ asset('img/'. $product->image) }}" style="width:50px;"></td>
+                                    <td class="table-image"><img src="{{ asset('media/'. $product->image) }}" style="width:50px;"></td>
                                     <td>{{ $product->price }}</td>
                                     <td>
                                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-default">Edit</a>

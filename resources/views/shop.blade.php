@@ -12,10 +12,10 @@ Shop - Main
 				@foreach($items as $product)
 					<div class="col-md-3">
 						<div class="thumbnail">
+							<a href="{{ route('shop.show', $product->slug) }}">
+								<img src="{{ asset('media/'. $product->image) }}" alt="{{ $product->name }}" class="img-responsive">
+							</a>
 							<div class="caption text-center">
-								<a href="{{ route('shop.show', $product->slug) }}">
-									<img src="{{ asset('img/'. $product->image) }}" alt="{{ $product->name }}" class="img-responsive">
-								</a>
 								<a href="{{ route('shop.show', $product->slug) }}">
 									<h3>{{ $product->name }}</h3>
 									<p>$ {{ $product->price }}</p>
