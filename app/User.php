@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Order;
 
 class User extends Authenticatable
 {
@@ -40,5 +41,10 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    public function hasPendingOrders() {
+        $pendingOrders = Order::where(['user_id' => $this->id, 'status' => 0])->get();
+        return !$pendingOrders->isEmpty();
     }
 }

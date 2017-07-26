@@ -8,9 +8,7 @@
                     <div class="panel-heading">Orders</div>
 
                     <div class="panel-body">
-                        @if (session('message'))
-                            <div class="alert alert-info">{{ session('message') }}</div>
-                        @endif
+                        @include('partials.flash')
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -29,7 +27,11 @@
                             <tbody>
                                 @forelse($orders as $order)
                                 <tr>
-                                    <td><input type="checkbox" class="checkbox_delete" name="entries_to_delete[]" value="{{ $order->id }}" /></td>
+                                    <td>
+                                        @if($order->getIPNStatus() !== 'Canceled' && $order->getIPNStatus() !== 'Finished')
+                                        <input type="checkbox" class="checkbox_delete" name="entries_to_delete[]" value="{{ $order->id }}" />
+                                        @endif
+                                    </td>
                                     <td><a href="{{ route('orders.show', $order->id) }}">{{ $order->id }}</a></td>
                                     <td><a href="{{ route('users.show', $order->user->id) }}">{{ $order->user->name }}</a></td>
                                     <td>{{ $order->user->address }}</td>
@@ -37,11 +39,10 @@
                                     <td>{{ $order->getIPNStatus() }}</td>
                                     <td>$ {{ $order->total }}</td>
                                     <td>
-                                        <a href="{{ route('orders.show', $order->id) }}" class="btn btn-default">View</a>
-                                        <form action="{{ route('orders.destroy', $order->id) }}" method="POST" style="display: inline" onsubmit="return confirm('Are you sure?');">
-                                            <input type="hidden" name="_method" value="DELETE">
+                                        <a href="{{ route('payment', $order->id) }}" class="btn btn-default">Checkout</a>
+                                        <form action="{{ route('orders.cancel', $order->id) }}" method="POST" style="display: inline" onsubmit="return confirm('Are you sure?');">
                                             {{ csrf_field() }}
-                                            <button class="btn btn-danger">Delete</button>
+                                            <button class="btn btn-danger">Cancel</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -52,11 +53,10 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <form action="{{ route('orders.mass_destroy') }}" method="post" onsubmit="return confirm('Are you sure?');">
+                        <form action="{{ route('orders.cancel_mass') }}" method="post" onsubmit="return confirm('Are you sure?');">
                             {{ csrf_field() }}
-                            <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="ids" id="ids" value="" />
-                            <input type="submit" value="Delete selected" class="btn btn-danger" />
+                            <input type="submit" value="Cancel selected" class="btn btn-danger" />
                         </form>
                     </div>
                 </div>

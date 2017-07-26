@@ -7,11 +7,13 @@ use \Cart as Cart;
 use App\Product;
 use App\Order;
 use App\OrderDetail;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function index() {
-    	return view('cart');
+        $pendingOrders = $this->getPendingOrders(Auth::user()->id);
+    	return view('cart', compact('pendingOrders'));
     }
 
     public function addCart(Request $request) {
@@ -36,7 +38,11 @@ class CartController extends Controller
     	return back()->with('success', 'Removed successfully!');
     }
 
-    public function getPayment() {
+    public function getPayment($order_id = false) {
+        if(!!$order_id) {
+            $order = Order::findOrFail($order_id);
+            return view('checkout.payment', compact('order'));
+        }
         return view('checkout.payment');
     }
 
@@ -47,5 +53,10 @@ class CartController extends Controller
 
     public function postStripe(Request $request) {
 
+    }
+    
+
+    public function getPendingOrders($user_id) {
+        return Order::where(['user_id' => $user_id, 'status' => 0])->get();
     }
 }

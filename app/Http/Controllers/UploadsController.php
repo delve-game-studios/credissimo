@@ -12,7 +12,7 @@ use Intervention\Image\Facades\Image;
 class UploadsController extends Controller
 {
     private function checkIsAdmin() {
-        if(!Auth::user()->is_admin) {
+        if(!Auth::user()->hasRole('Admin')) {
             redirect('/shop')->with('error', 'Access Denied!')->send();
         }
     }

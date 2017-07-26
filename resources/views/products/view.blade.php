@@ -19,18 +19,12 @@
 			<p>{{ $product->description }}</p>
 			<br>
 			<p class="price">$ {{ $product->price }}</p>
-			<form action="{{ route('cart.store') }}" method="POST">
-				{{ csrf_field() }}
-				<input type="hidden" name="id" value="{{ $product->id }}">
-				<input type="hidden" name="name" value="{{ $product->name }}">
-				<input type="hidden" name="price" value="{{ $product->price }}">
-				<button class="btn btn-success">
-					<span>Add to Cart</span>
-				</button>
-				<button class="btn btn-info">
-					<span>To Wishlist</span>
-				</button>
-			</form>
+			<button class="btn btn-warning" href="{{ route('products.edit', $product->id) }}">
+				<span>Edit Product</span>
+			</button>
+			<button class="btn btn-danger" href="{{ route('products.destroy', $product->id) }}">
+				<span>Delete</span>
+			</button>
 		</div>
 	</div>
 </div>

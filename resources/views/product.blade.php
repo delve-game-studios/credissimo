@@ -8,29 +8,35 @@
 			<hr>
 
 			<div class="col-md-4">
-				<img src="{{ asset('media/'. $product->image) }}" alt="{{ $product->name }}" class="img-responsive">
+				<div class="thumbnail">
+					<img src="{{ asset('media/'. $product->image) }}" alt="{{ $product->name }}" class="img-responsive">
+				</div>
 			</div>
 			<div class="col-md-8">
 				<h3>{{ $product->name }}</h3>
 				<h3>$ {{ $product->price }}</h3>
-				<form action="{{ route('cart.store') }}" method="POST" class="sid-by-side">
-					{{ csrf_field() }}
-					<input type="hidden" name="id" value="{{ $product->id }}">
-					<input type="hidden" name="name" value="{{ $product->name }}">
-					<input type="hidden" name="price" value="{{ $product->price }}">
-					<input type="submit" class="btn btn-success btn-lg" value="AddToCart">
-				</form>
-				<br>
+				<p>{{ $product->description }}</p>
+				<div class="row">
+					<div class="col-md-2">
+						<form action="{{ route('cart.store') }}" method="POST" class="sid-by-side">
+							{{ csrf_field() }}
+							<input type="hidden" name="id" value="{{ $product->id }}">
+							<input type="hidden" name="name" value="{{ $product->name }}">
+							<input type="hidden" name="price" value="{{ $product->price }}">
+							<input type="submit" class="btn btn-success btn-lg" value="Add to Cart">
+						</form>
+					</div>
 
-				<form action="" method="POST" class="sid-by-side">
-					{{ csrf_field() }}
-					<input type="hidden" name="id" value="{{ $product->id }}">
-					<input type="hidden" name="name" value="{{ $product->name }}">
-					<input type="hidden" name="price" value="{{ $product->price }}">
-					<input type="submit" class="btn btn-success btn-lg" value="ToWishList">
-				</form>
-				<br><br>
-				{{ $product->description }}
+					<div class="col-md-2">
+						<form action="" method="POST" class="sid-by-side">
+							{{ csrf_field() }}
+							<input type="hidden" name="id" value="{{ $product->id }}">
+							<input type="hidden" name="name" value="{{ $product->name }}">
+							<input type="hidden" name="price" value="{{ $product->price }}">
+							<input type="submit" class="btn btn-info btn-lg" value="Add to Wishlist">
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -43,18 +49,10 @@
 						<div class="thumbnail">
 							<div class="caption text-center">
 								<a href="{{ route('shop.show', $product->slug) }}">
-									<img src="{{ asset('img/'. $product->image) }}" alt="{{ $product->name }}" class="img-responsive">
-								</a>
-								<a href="{{ route('shop.show', $product->slug) }}">
+									<img src="{{ asset('media/'. $product->image) }}" alt="{{ $product->name }}" class="img-responsive">
 									<h3>{{ $product->name }}</h3>
 									<p>$ {{ $product->price }}</p>
 								</a>
-								<form action="{{ route('cart.store') }}" method="POST">
-									{{ csrf_field() }}
-									<button class="btn btn-success">
-										<span class="glyphicon glyphicon-shopping-cart"></span>
-									</button>
-								</form>
 							</div>
 						</div>
 					</div>

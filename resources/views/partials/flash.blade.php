@@ -27,3 +27,9 @@
 		{{ Session::get('meessage') }}
 	</div>
 @endif
+
+<script type="text/javascript">
+	setTimeout(function(){
+		$('div.alert').hide('fade');
+	}, 3000);
+</script>

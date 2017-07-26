@@ -6,12 +6,15 @@
 		<h1>Your Cart</h1>
 		<hr>
 		@include('partials.flash')
+		@if(!$pendingOrders->isEmpty())
+		<div class="alert alert-warning">You have pending orders. Please review them <a href="{{ route('orders.history') }}">here</a></div>
+		@endif
 		@if(sizeof(Cart::content()) > 0)
 			<table class="table">
 				<thead>
 					<th>Name</th>
 					<th>Image</th>
-					<th>Quantity</th>
+					<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quantity</th>
 					<th>Price</th>
 					<th>Action</th>
 				</thead>
@@ -23,14 +26,14 @@
 						</td>
 						<td class="table-image">
 							<a href="{{ url('/shop', [$item->model->slug]) }}">
-								<img src="{{ asset('img/'. $item->model->image) }}" alt="{{ $item->name }}" class="img-responsive cart-image" style="width:70px;height:60px;" />
+								<img src="{{ asset('media/'. $item->model->image) }}" alt="{{ $item->name }}" class="img-responsive cart-image" style="width:70px;height:60px;" />
 							</a>
 						</td>
 						<td>
-							<form action="{{ route('cart.update', ['rowId' => $item->rowId]) }}" method="POST" style="width:70px;">
+							<form action="{{ route('cart.update', ['rowId' => $item->rowId]) }}" method="POST" class="row">
 								{{csrf_field()}}
-								<input type="text" name="qty" value="{{ $item->qty }}">
-								<input type="submit" class="btn btn-success" value="Update">
+								<input type="text" name="qty" value="{{ $item->qty }}" class="col-md-1 col-md-offset-2">&nbsp;
+								<input type="submit" class="btn btn-success col-md-3 col-md-offset-3" value="Update">
 							</form>
 						</td>
 						<td>{{ $item->subtotal() }}</td>
@@ -72,7 +75,10 @@
 			</table>
 			<a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg">Continue Shopping</a>
 			&nbsp;
-			<a href="{{ route('payment') }}" class="btn btn-success btn-lg">Proceed to checkout</a>
+			<!-- <form action="{{ route('orders.store') }}" method="POST">
+				<input type="hidden" name="">
+			</form> -->
+			<a href="{{ route('orders.create') }}" class="btn btn-success btn-lg">Order & Checkout</a>
 		@else
 			<h3>Your cart is empty</h3>
 			<a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg">Continue Shopping</a>

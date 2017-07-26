@@ -41,7 +41,7 @@ Route::get('/cart/{id}', [
 	'as' => 'cart.destroy'
 ]);
 
-Route::get('/payment', [
+Route::get('/payment/{order_id?}', [
 	'uses' => 'CartController@getPayment',
 	'as' => 'payment'
 ]);
@@ -56,6 +56,20 @@ Route::post('/payment/stripe', [
 	'as' => 'payment.stripe'
 ]);
 
+Route::get('/orders', [
+	'uses' => 'OrdersController@ordersHistory',
+	'as' => 'orders.history'
+]);
+
+Route::post('/orders/{order_id}', [
+	'uses' => 'OrdersController@cancelOrder',
+	'as' => 'orders.cancel'
+]);
+
+Route::post('/orders/cancel_mass', [
+	'uses' => 'OrdersController@cancelOrders',
+	'as' => 'orders.cancel_mass'
+]);
 
 Route::get('/', function () {
 	return redirect()->route('shop.index');
@@ -67,9 +81,18 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+    Route::get('/', [
+    	'uses' => 'AdminController@index',
+    	'as' => 'admin.index'
+	]);
+	
     Route::delete('products/mass_destroy', 'ProductsController@massDestroy')->name('products.mass_destroy');
     Route::resource('products', 'ProductsController');
     Route::delete('products/mass_destroy', 'ProductsController@massDestroy')->name('products.mass_destroy');
+    Route::resource('orders', 'OrdersController');
+    Route::post('orders/store', 'OrdersController@store')->name('orders.store');
+    Route::delete('orders/mass_destroy', 'OrdersController@massDestroy')->name('orders.mass_destroy');
+    Route::resource('users', 'UsersController');
 });
 
 Route::group(['middleware' => 'auth', 'prefix' => 'user'], function() {
