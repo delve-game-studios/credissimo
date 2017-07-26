@@ -85,7 +85,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     	'uses' => 'AdminController@index',
     	'as' => 'admin.index'
 	]);
-	
+
     Route::delete('products/mass_destroy', 'ProductsController@massDestroy')->name('products.mass_destroy');
     Route::resource('products', 'ProductsController');
     Route::delete('products/mass_destroy', 'ProductsController@massDestroy')->name('products.mass_destroy');
@@ -93,9 +93,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::post('orders/store', 'OrdersController@store')->name('orders.store');
     Route::delete('orders/mass_destroy', 'OrdersController@massDestroy')->name('orders.mass_destroy');
     Route::resource('users', 'UsersController');
-});
-
-Route::group(['middleware' => 'auth', 'prefix' => 'user'], function() {
     Route::delete('uploads/mass_destroy', 'UploadsController@massDestroy')->name('uploads.mass_destroy');
 	Route::resource('uploads', 'UploadsController');
     Route::delete('uploads/mass_destroy', 'UploadsController@massDestroy')->name('uploads.mass_destroy');

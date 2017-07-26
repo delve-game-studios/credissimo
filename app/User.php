@@ -47,4 +47,8 @@ class User extends Authenticatable
         $pendingOrders = Order::where(['user_id' => $this->id, 'status' => 0])->get();
         return !$pendingOrders->isEmpty();
     }
+
+    public function uploads() {
+        return $this->hasMany('App\Upload', 'user_id', 'id');
+    }
 }

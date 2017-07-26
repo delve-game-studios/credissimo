@@ -8,11 +8,18 @@ use App\Product;
 use App\Order;
 use App\OrderDetail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
     public function index() {
-        $pendingOrders = $this->getPendingOrders(Auth::user()->id);
+        if(!Auth::guest()) {
+            $pendingOrders = $this->getPendingOrders(Auth::user()->id);
+        } else {
+            $pendingOrders = new Collection;
+            Session::flash('signin-permanent', 'to checkout.');
+        }
     	return view('cart', compact('pendingOrders'));
     }
 

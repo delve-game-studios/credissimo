@@ -22,6 +22,12 @@
 	</div>
 @endif
 
+@if(Session::has('signin-permanent') && !!Auth::guest())
+	<div class="alert alert-danger keep-me">
+		You need to <a href="{{ route('login') }}">Sign In</a> {{ Session::get('signin-permanent') }}
+	</div>
+@endif
+
 @if(Session::has('meessage'))
 	<div class="alert alert-info">
 		{{ Session::get('meessage') }}
@@ -30,6 +36,6 @@
 
 <script type="text/javascript">
 	setTimeout(function(){
-		$('div.alert').hide('fade');
+		$('div.alert:not(.keep-me)').hide('fade');
 	}, 3000);
 </script>

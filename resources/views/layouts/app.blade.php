@@ -59,6 +59,15 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    @if(Auth::user()->hasRole('Admin'))
+                                    <li>
+                                        <a href="{{ route('admin.index') }}"><i class="glyphicon glyphicon-home"></i> Dashboard</a>
+                                    </li>
+                                    @else
+                                    <li>
+                                        <a href="{{ route('shop.index') }}"><i class="glyphicon glyphicon-home"></i> Home</a>
+                                    </li>
+                                    @endif
                                     <li>
                                         <a href="{{ route('orders.history') }}"><i class="glyphicon glyphicon-tasks"></i> Order History</a>
                                     </li>

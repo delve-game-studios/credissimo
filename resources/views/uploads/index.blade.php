@@ -29,13 +29,13 @@ Credissimo - File Manager
             </form>
         </div>
     </div><hr>
-    @if(!$uploads->isEmpty())
+    @if(!empty($uploads))
     <div class="col-md-9">
         <div class="row">
             @foreach($uploads as $item)
             <div class="col-sm-6 col-md-2">
-                <button class="thumbnail" type="button" data-id="{{ $item->id }}">
-                    <img class="" src="{{ asset('media/uploads/' . Auth::user()->id . '/' . $item->thumbnail) }}" alt="{{ $item->title }}">
+                <button class="thumbnail" type="button" data-id="{{ $item['id'] }}">
+                    <img class="" src="{{ asset('media/uploads/' . Auth::user()->id . '/' . $item['thumbnail']) }}" alt="{{ $item['id'] }}">
                 </button>
             </div>
             @endforeach

@@ -73,12 +73,14 @@
 					</tr>
 				</tbody>
 			</table>
+			@if(!Auth::guest())
 			<a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg">Continue Shopping</a>
 			&nbsp;
 			<!-- <form action="{{ route('orders.store') }}" method="POST">
 				<input type="hidden" name="">
 			</form> -->
 			<a href="{{ route('orders.create') }}" class="btn btn-success btn-lg">Order & Checkout</a>
+			@endif
 		@else
 			<h3>Your cart is empty</h3>
 			<a href="{{ route('shop.index') }}" class="btn btn-primary btn-lg">Continue Shopping</a>

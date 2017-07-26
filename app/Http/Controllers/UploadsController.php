@@ -25,7 +25,13 @@ class UploadsController extends Controller
     public function index()
     {
         $this->checkIsAdmin();
-        $uploads = Upload::all();
+        $uploads = Auth::user()->uploads()->get()->toArray();
+        foreach($uploads as $index => $file) {
+            $filename = 'media/img/' . Auth::user()->id . '/' . $file['thumbnail'];
+            if(!file_exists('media/img/' . Auth::user()->id . '/' . $file['thumbnail'])) {
+                unset($uploads[$index]);
+            }
+        }
         return view('uploads.index', compact('uploads'));
     }
 
@@ -53,14 +59,10 @@ class UploadsController extends Controller
         $data['title'] = '';
         $data['description'] = '';
 
-        if(!is_array($request->file('file'))) {
-            $files = [$request->file('file')];
-        } else {
-            $files = $request->file('file');
-        }
+        $files = is_array($request->file('file')) ? $request->file('file') : [$request->file('file')];
 
         foreach($files as $file) {
-            $filePath = $file->store(Auth::user()->id);
+            $filePath = $file->store('img');
 
             $thumbnail = Image::make(Storage::get($filePath))->resize(256,256)->encode();
             $image = Image::make(Storage::get($filePath))->encode();
@@ -69,8 +71,8 @@ class UploadsController extends Controller
             $ext = array_pop($filePathA);
             $filename = array_shift($filePathA);
 
-            Storage::disk('uploads')->put($filePath, $image);
-            Storage::disk('uploads')->put("{$filename}.thumbnail.{$ext}", $thumbnail);
+            Storage::disk('images')->put($filePath, $image);
+            Storage::disk('images')->put("{$filename}.thumbnail.{$ext}", $thumbnail);
 
             $data['filename'] = str_replace(Auth::user()->id . '/', '', $filePath);
             $data['thumbnail'] = str_replace(Auth::user()->id . '/', '', "{$filename}.thumbnail.{$ext}");

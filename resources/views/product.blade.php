@@ -26,16 +26,6 @@
 							<input type="submit" class="btn btn-success btn-lg" value="Add to Cart">
 						</form>
 					</div>
-
-					<div class="col-md-2">
-						<form action="" method="POST" class="sid-by-side">
-							{{ csrf_field() }}
-							<input type="hidden" name="id" value="{{ $product->id }}">
-							<input type="hidden" name="name" value="{{ $product->name }}">
-							<input type="hidden" name="price" value="{{ $product->price }}">
-							<input type="submit" class="btn btn-info btn-lg" value="Add to Wishlist">
-						</form>
-					</div>
 				</div>
 			</div>
 		</div>
