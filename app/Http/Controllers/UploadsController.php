@@ -27,8 +27,8 @@ class UploadsController extends Controller
         $this->checkIsAdmin();
         $uploads = Auth::user()->uploads()->get()->toArray();
         foreach($uploads as $index => $file) {
-            $filename = 'media/img/' . Auth::user()->id . '/' . $file['thumbnail'];
-            if(!file_exists('media/img/' . Auth::user()->id . '/' . $file['thumbnail'])) {
+            $filename = 'media/img/' . $file['thumbnail'];
+            if(!file_exists('media/img/' . $file['thumbnail'])) {
                 unset($uploads[$index]);
             }
         }
@@ -74,8 +74,8 @@ class UploadsController extends Controller
             Storage::disk('images')->put($filePath, $image);
             Storage::disk('images')->put("{$filename}.thumbnail.{$ext}", $thumbnail);
 
-            $data['filename'] = str_replace(Auth::user()->id . '/', '', $filePath);
-            $data['thumbnail'] = str_replace(Auth::user()->id . '/', '', "{$filename}.thumbnail.{$ext}");
+            $data['filename'] = str_replace('img/', '', $filePath);
+            $data['thumbnail'] = str_replace('img/', '', "{$filename}.thumbnail.{$ext}");
 
             Upload::create($data);
         }
@@ -127,8 +127,8 @@ class UploadsController extends Controller
     {
         $this->checkIsAdmin();
         $upload = Upload::findOrFail($id);
-        Storage::disk('uploads')->delete(Auth::user()->id . "/{$upload->filename}");
-        Storage::disk('uploads')->delete(Auth::user()->id . "/{$upload->thumbnail}");
+        Storage::disk('images')->delete("/{$upload->filename}");
+        Storage::disk('images')->delete("/{$upload->thumbnail}");
         $upload->delete();
 
         return !$back ? redirect()->route('uploads.index')->with(['success' => 'File deleted successfully']) : true;
